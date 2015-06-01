@@ -1,15 +1,20 @@
 package com.marche.moonlightembeddedcontroller;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+
+import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
+import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
+import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
+import com.squareup.otto.Subscribe;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -60,7 +65,30 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
             return rootView;
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            SSHManager.getInstance().SSHBus.register(this);
+
+            SSHManager.getInstance().connectToSSH(getActivity(), "10.44.220.224", "Chris Owen", "Redball30");
+        }
+
+        @Subscribe
+        public void SSHConnectedEvent(SSHConnected event){
+            SSHManager.getInstance().doesLimelightExist(getActivity());
+        }
+
+        @Subscribe
+        public void LimelightExistsEvent(LimelightExistsEvent event){
+            if(event.doesExist){
+                Log.d("EXIST", "EXIST");
+            } else {
+                SSHManager.getInstance().createFolderAndDownloadFiles(getActivity());
+            }
         }
     }
 }
