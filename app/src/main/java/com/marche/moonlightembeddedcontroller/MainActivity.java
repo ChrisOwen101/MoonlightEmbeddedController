@@ -1,20 +1,13 @@
 package com.marche.moonlightembeddedcontroller;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
-import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
-import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
-import com.squareup.otto.Subscribe;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -25,11 +18,14 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new LaunchFragment())
                     .commit();
         }
-    }
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Moonlight Controller");
+        actionBar.setIcon(R.mipmap.ic_launcher);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,42 +49,8 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-            return rootView;
-        }
-
-        @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-            SSHManager.getInstance().SSHBus.register(this);
-
-            SSHManager.getInstance().connectToSSH(getActivity(), "10.44.220.224", "Chris Owen", "Redball30");
-        }
-
-        @Subscribe
-        public void SSHConnectedEvent(SSHConnected event){
-            SSHManager.getInstance().doesLimelightExist(getActivity());
-        }
-
-        @Subscribe
-        public void LimelightExistsEvent(LimelightExistsEvent event){
-            if(event.doesExist){
-                Log.d("EXIST", "EXIST");
-            } else {
-                SSHManager.getInstance().createFolderAndDownloadFiles(getActivity());
-            }
-        }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
