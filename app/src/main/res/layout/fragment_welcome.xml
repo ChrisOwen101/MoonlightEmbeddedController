@@ -45,54 +45,13 @@
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="First, we need a few details. Please enter the IP address (or hostname), login name and password of the device you want to stream to."
+                android:text="With this app you can
+                *"
                 android:padding="5dp"
                 android:textSize="12sp"
                 android:gravity="center"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/ipaddress"
-                android:layout_gravity="center_horizontal"
-                android:hint="IP Address"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login"
-                android:layout_gravity="center_horizontal"
-                android:hint="Login"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/password"
-                android:layout_gravity="center_horizontal"
-                android:hint="Password"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="5dp"
-        android:layout_marginBottom="10dp">
-
-        <com.dd.CircularProgressButton
-            android:id="@+id/btnWithText"
-            android:layout_width="196dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"/>
-
-    </android.support.v7.widget.CardView>
 </LinearLayout>

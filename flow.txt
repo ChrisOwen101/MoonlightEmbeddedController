@@ -1,0 +1,59 @@
+Welcome
+Find client device
+    Enter IP
+    Select from List
+Install Moonlight on Client
+    User directs to installed client
+    Install client to /limelight/limelight.jar
+    Install game controllers
+Pair Moonlight to Host PC
+    Show code on screen
+    Wait until completion
+Show settings for Moonlight
+    Settings
+        Resolution
+        Width
+        Height
+        FPS
+        Bitrate
+        Packetsize
+        App to play
+        Mappings
+        Allow GFE to modify game settings?
+        Local audio?
+        Audio output
+    Load list of games
+        Show list of games
+    Stream!
+
+
+
+Usage: moonlight [options] host
+
+Actions:
+
+map Create mapping file for gamepad
+pair Pair device with computer
+stream Stream computer to device
+list List available games and applications
+quit Quit the application or game being streamed
+help Show this help
+
+Streaming options:
+
+-720 Use 1280x720 resolution (default)
+-1080 Use 1920x1080 resolution
+-width <width> Horizontal resolution (default 1280)
+-height <height> Vertical resolution (default 720)
+-30fps Use 30fps
+-60fps Use 60fps (default)
+-bitrate <bitrate> Specify the bitrate in Kbps
+-packetsize <size> Specify the maximum packetsize in bytes
+-app <app> Name of app to stream
+-nosops Don't allow GFE to modify game settings
+-input <device> Use <device> as input. Can be used multiple times
+-mapping <file> Use <file> as gamepad mapping configuration file (use before -input)
+-audio <device> Use <device> as ALSA audio output device (default sysdefault)
+-localaudio Play audio locally
+
+Use ctrl-c to exit application

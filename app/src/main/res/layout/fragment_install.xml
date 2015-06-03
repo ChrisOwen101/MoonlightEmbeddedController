@@ -7,27 +7,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$PlaceholderFragment"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="5dp"
-        android:layout_marginBottom="10dp">
-
-        <TextView
-            android:id="@+id/info_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Welcome to Moonlight Embedded Controller"
-            android:padding="15dp"
-            android:textSize="22sp"
-            android:gravity="center"/>
-
-    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_gravity="center"
@@ -45,7 +26,7 @@
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="First, we need a few details. Please enter the IP address (or hostname), login name and password of the device you want to stream to."
+                android:text="Next, can you point us to the location of Moonlight on your device?"
                 android:padding="5dp"
                 android:textSize="12sp"
                 android:gravity="center"/>
@@ -53,30 +34,21 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ipaddress"
+                android:id="@+id/location"
                 android:layout_gravity="center_horizontal"
-                android:hint="IP Address"
+                android:hint="Directory of Moonlight.jar"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"/>
 
-            <EditText
+            <TextView
+                android:id="@+id/details2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login"
-                android:layout_gravity="center_horizontal"
-                android:hint="Login"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
+                android:layout_height="match_parent"
+                android:text="If not, we can install it for you. Just click the button below. "
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:gravity="center"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/password"
-                android:layout_gravity="center_horizontal"
-                android:hint="Password"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
