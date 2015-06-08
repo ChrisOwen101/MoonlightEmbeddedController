@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.marche.moonlightembeddedcontroller.Events.GotGamesEvent;
+import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
@@ -24,7 +25,7 @@ public class GameFragment extends Fragment {
 
     Device device;
 
-    @InjectView(R.id.progress_circular)
+    @InjectView(R.id.progressBar)
     CircleProgressBar loadingSpinner;
 
     @InjectView(R.id.listView)
@@ -35,18 +36,44 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_games, container, false);
         ButterKnife.inject(this, rootView);
+
+        Bundle bundle = this.getArguments();
+        device = (Device) bundle.getSerializable("device");
+
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SSHManager.getInstance().SSHBus.register(this);
+
+        if(SSHManager.getInstance().isConnected){
+            SSHManager.getInstance().getGames(getActivity());
+        } else {
+            SSHManager.getInstance().connectToSSH(getActivity(), device);
+        }
+    }
+
+    @Subscribe
+    public void SSHConnectedEvent(SSHConnected event){
+        SSHManager.getInstance().getGames(getActivity());
     }
 
     @Subscribe
     public void GotGamesEvent(GotGamesEvent event){
         loadingSpinner.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SSHManager.getInstance().SSHBus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SSHManager.getInstance().SSHBus.unregister(this);
     }
 }

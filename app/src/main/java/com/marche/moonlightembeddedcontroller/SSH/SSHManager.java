@@ -34,6 +34,9 @@ public class SSHManager {
     public MainThreadBus SSHBus = new MainThreadBus();
     private JSch jsch;
     private Session session;
+    private Device device;
+
+    public boolean isConnected = false;
 
     public static SSHManager getInstance() {
         if(instance == null) {
@@ -43,6 +46,8 @@ public class SSHManager {
     }
 
     public void connectToSSH(final Context con, final Device device){
+        this.device = device;
+
         Thread thread = new Thread() {
             @Override
             public void run() {
@@ -60,6 +65,8 @@ public class SSHManager {
 
                     dispatchEventBus(con, new SSHConnected());
 
+                    isConnected = true;
+
                 } catch (JSchException e){
                     if(e.getMessage().contains("ECONNREFUSED")){
                         SSHBus.post(new SSHError());
@@ -75,7 +82,9 @@ public class SSHManager {
         thread.start();
     }
 
-    public void doesLimelightExist(final Context con, final String dir) {
+    public void doesLimelightExist(final Context con, final Device device) {
+        this.device = device;
+
         Thread thread = new Thread() {
             @Override
             public void run() {
@@ -86,7 +95,7 @@ public class SSHManager {
                     channel.setOutputStream(baos);
 
                     // Execute command
-                    channel.setCommand("[ -f "+ dir +" ] && echo \"yes\" || echo \"no\"");
+                    channel.setCommand("[ -f "+ device.directory  +"/limelight.jar ] && echo \"yes\" || echo \"no\"");
                     channel.connect();
 
                     InputStream in = channel.getInputStream();
@@ -127,24 +136,19 @@ public class SSHManager {
         thread.start();
     }
 
-    public void doesLimelightExist(final Context con) {
-        doesLimelightExist(con, "limelight/limelight.jar");
-    }
-
     public void getGames(final Context con) {
         Thread thread = new Thread() {
             @Override
             public void run() {
                 try {
-                    Channel channel=session.openChannel("shell");
-                    OutputStream ops = channel.getOutputStream();
-                    PrintStream ps = new PrintStream(ops, true);
+                    // SSH Channel
+                    ChannelExec channel = (ChannelExec) session.openChannel("exec");
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    channel.setOutputStream(baos);
 
+                    // Execute command
+                    channel.setCommand("java -jar " + device.directory + "/limelight.jar list");
                     channel.connect();
-                    ps.println("cd limelight");
-                    ps.println("java -jar limelight.jar list");
-                    //give commands to be executed inside println.and can have any no of commands sent.
-                    ps.close();
 
                     boolean gamesIncoming = false;
 
@@ -203,7 +207,7 @@ public class SSHManager {
                     PrintStream ps = new PrintStream(ops, true);
 
                     channel.connect();
-                    ps.println("cd limelight");
+                    ps.println("cd " + device.directory);
                     ps.println("java -jar limelight.jar pair");
                     //give commands to be executed inside println.and can have any no of commands sent.
                     ps.close();

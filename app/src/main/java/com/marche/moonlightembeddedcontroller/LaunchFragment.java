@@ -1,7 +1,6 @@
 package com.marche.moonlightembeddedcontroller;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -49,12 +48,6 @@ public class LaunchFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        SSHManager.getInstance().SSHBus.register(this);
-    }
-
     @OnClick(R.id.loginButton)
     public void submit(View view) {
         loginButton.setIndeterminateProgressMode(true);
@@ -66,8 +59,10 @@ public class LaunchFragment extends Fragment {
 
     @Subscribe
     public void SSHConnectedEvent(SSHConnected event){
-        SSHManager.getInstance().doesLimelightExist(getActivity());
+        SSHManager.getInstance().doesLimelightExist(getActivity(), device);
     }
+
+
 
     @Subscribe
     public void SSHError(SSHError event){
@@ -90,8 +85,14 @@ public class LaunchFragment extends Fragment {
     @Subscribe
     public void LimelightExistsEvent(LimelightExistsEvent event){
         if(event.doesExist){
+            Bundle b = new Bundle();
+            b.putSerializable("device", device);
+
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, new PairFragment());
+            PairFragment pair = new PairFragment();
+            pair.setArguments(b);
+
+            transaction.replace(R.id.container, pair);
             transaction.addToBackStack(null);
             transaction.commit();
         } else {
@@ -103,7 +104,7 @@ public class LaunchFragment extends Fragment {
     @Subscribe
     public void LimelightDownloadedEvent(final LimelightDownloadedEvent event){
         if(event.done ){
-            device.directory = "limelight/limelight.jar";
+            device.directory = "limelight";
             loginButton.setProgress(100);
         } else {
             if(event.percentage == -1){
@@ -145,13 +146,29 @@ public class LaunchFragment extends Fragment {
     public void showDirectoryDialog(){
         new MaterialDialog.Builder(getActivity())
                 .title("Directory")
-                .content("Enter the location of the limelight.jar file.")
+                .content("Enter the location of the limelight.jar file. (Do not include the filename and the file must be named limelight.jar))")
                 .input("", "", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        device.directory = input.toString();
-                        SSHManager.getInstance().doesLimelightExist(getActivity(), input.toString());
+
+                        String dir = input.toString();
+                        dir = dir.replace("/limelight.jar", "");
+                        device.directory = dir;
+                        SSHManager.getInstance().doesLimelightExist(getActivity(), device);
                     }
                 }).show();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SSHManager.getInstance().SSHBus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SSHManager.getInstance().SSHBus.unregister(this);
+    }
+
 }

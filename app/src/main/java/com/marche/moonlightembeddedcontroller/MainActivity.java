@@ -1,11 +1,15 @@
 package com.marche.moonlightembeddedcontroller;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.gson.Gson;
+import com.marche.moonlightembeddedcontroller.POJO.Device;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -17,9 +21,29 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new LaunchFragment())
-                    .commit();
+
+            SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+            String deviceString = prefs.getString("device", "");
+
+            if(!deviceString.isEmpty()){
+                Gson gson = new Gson();
+                Device device = gson.fromJson(deviceString, Device.class);
+
+                Bundle b = new Bundle();
+                b.putSerializable("device", device);
+
+                GameFragment game = new GameFragment();
+                game.setArguments(b);
+
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, game)
+                        .commit();
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, new LaunchFragment())
+                        .commit();
+            }
+
         }
 
         ActionBar actionBar = getSupportActionBar();
