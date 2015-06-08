@@ -3,7 +3,7 @@ package com.marche.moonlightembeddedcontroller;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dd.CircularProgressButton;
+import com.marche.moonlightembeddedcontroller.Events.LimelightDownloadedEvent;
 import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
 import com.marche.moonlightembeddedcontroller.Events.SSHError;
@@ -57,10 +58,9 @@ public class LaunchFragment extends Fragment {
     @OnClick(R.id.loginButton)
     public void submit(View view) {
         loginButton.setIndeterminateProgressMode(true);
-        loginButton.setProgress(50);
+        loginButton.setProgress(1);
 
-        Device device = new Device(ipaddressEditText.getText().toString(), loginEditText.getText().toString(), passwordEditText.getText().toString());
-
+        device = new Device(ipaddressEditText.getText().toString(), loginEditText.getText().toString(), passwordEditText.getText().toString());
         SSHManager.getInstance().connectToSSH(getActivity(), device);
     }
 
@@ -81,19 +81,40 @@ public class LaunchFragment extends Fragment {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         dialog.dismiss();
+                        loginButton.setProgress(0);
                     }
                 })
                 .show();
     }
 
-
     @Subscribe
     public void LimelightExistsEvent(LimelightExistsEvent event){
         if(event.doesExist){
-            Log.d("EXIST", "EXIST");
+            // Create new fragment and transaction
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, new PairFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         } else {
             showAddMoonlightDialog();
-            SSHManager.getInstance().createFolderAndDownloadFiles(getActivity());
+        }
+    }
+
+
+    @Subscribe
+    public void LimelightDownloadedEvent(final LimelightDownloadedEvent event){
+        if(event.done ){
+            device.directory = "limelight/limelight.jar";
+            loginButton.setProgress(100);
+        } else {
+            if(event.percentage == -1){
+                loginButton.setIndeterminateProgressMode(true);
+                loginButton.setProgress(1);
+            } else if(event.percentage != 100){
+                loginButton.setIndeterminateProgressMode(false);
+                System.out.println(event.percentage);
+                loginButton.setProgress(event.percentage);
+            }
         }
     }
 
@@ -102,20 +123,21 @@ public class LaunchFragment extends Fragment {
 
         new MaterialDialog.Builder(getActivity())
                 .title("Moonlight Was Not Found")
-                .content("Hmmm... Seems like Moonlight could not be found where we were expecting " +
-                        "it to be. Should I download it? ")
+                .content("Hmmm... Seems like Moonlight could not be found. Should I download it? (This may take a couple of minutes)")
                 .positiveText("Yep, get downloadin'")
                 .negativeText("Nope, it's on there. Let me find it.")
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        dialog.dismiss();
-                        showDirectoryDialog();
+                        loginButton.setProgress(0);
+                        loginButton.setProgress(50);
+                        SSHManager.getInstance().createFolderAndDownloadFiles(getActivity());
                     }
 
                     @Override
                     public void onNegative(MaterialDialog dialog) {
-                        SSHManager.getInstance().createFolderAndDownloadFiles(getActivity());
+                        dialog.dismiss();
+                        showDirectoryDialog();
                     }
                 })
                 .show();
@@ -128,7 +150,8 @@ public class LaunchFragment extends Fragment {
                 .input("", "", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        // Do something
+                        device.directory = input.toString();
+                        SSHManager.getInstance().doesLimelightExist(getActivity(), input.toString());
                     }
                 }).show();
     }

@@ -11,6 +11,7 @@ import com.jcraft.jsch.Session;
 import com.marche.moonlightembeddedcontroller.Events.LimelightDownloadedEvent;
 import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
 import com.marche.moonlightembeddedcontroller.Events.MainThreadBus;
+import com.marche.moonlightembeddedcontroller.Events.PairEvent;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
 import com.marche.moonlightembeddedcontroller.Events.SSHError;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
@@ -60,6 +61,10 @@ public class SSHManager {
                 } catch (JSchException e){
                     if(e.getMessage().contains("ECONNREFUSED")){
                         SSHBus.post(new SSHError());
+                    } else if(e.getMessage().contains("Auth fail")){
+                        SSHBus.post(new SSHError());
+                    } else {
+                        System.out.println(e.getMessage());
                     }
                 }
             }
@@ -68,7 +73,7 @@ public class SSHManager {
         thread.start();
     }
 
-    public void doesLimelightExist(final Context con) {
+    public void doesLimelightExist(final Context con, final String dir) {
         Thread thread = new Thread() {
             @Override
             public void run() {
@@ -79,7 +84,7 @@ public class SSHManager {
                     channel.setOutputStream(baos);
 
                     // Execute command
-                    channel.setCommand("[ -d limelightTest ] && echo \"yes\" || echo \"no\"");
+                    channel.setCommand("[ -f "+ dir +" ] && echo \"yes\" || echo \"no\"");
                     channel.connect();
 
                     InputStream in = channel.getInputStream();
@@ -120,6 +125,81 @@ public class SSHManager {
         thread.start();
     }
 
+    public void doesLimelightExist(final Context con) {
+        doesLimelightExist(con, "limelight/limelight.jar");
+    }
+
+    public void startTimeOut(final int length){
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(length);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        thread.start();
+    }
+
+    public void pairComputer(final Context con) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Channel channel=session.openChannel("shell");
+                    OutputStream ops = channel.getOutputStream();
+                    PrintStream ps = new PrintStream(ops, true);
+
+                    channel.connect();
+                    ps.println("cd limelight");
+                    ps.println("java -jar limelight.jar pair");
+                    //give commands to be executed inside println.and can have any no of commands sent.
+                    ps.close();
+
+                    startTimeOut(8000);
+
+                    InputStream in = channel.getInputStream();
+                    byte[] tmp = new byte[1024];
+                    while (true) {
+                        while (in.available() > 0) {
+                            int i = in.read(tmp, 0, 1024);
+                            if (i < 0) break;
+
+                            String tmpString = new String(tmp, 0, i);
+                            System.out.println(tmpString);
+
+                            if(tmpString.contains("Please enter the following")){
+                                String pairCode = tmpString.replaceAll("\\D+","");
+                                dispatchEventBus(con, new PairEvent(pairCode));
+                            }
+                        }
+
+                        if (channel.isClosed()) {
+                            if (in.available() > 0) continue;
+                            System.out.println("exit-status: " + channel.getExitStatus());
+
+                            dispatchEventBus(con, new LimelightDownloadedEvent(true));
+                            break;
+                        }
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ee) {
+                        }
+                    }
+                    channel.disconnect();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        };
+
+        thread.start();
+    }
+
     public void createFolderAndDownloadFiles(final Context con) {
         Thread thread = new Thread() {
             @Override
@@ -144,18 +224,36 @@ public class SSHManager {
                         while (in.available() > 0) {
                             int i = in.read(tmp, 0, 1024);
                             if (i < 0) break;
-                            System.out.print(new String(tmp, 0, i));
+
+                            String tmpString = new String(tmp, 0, i);
+                            System.out.println(tmpString);
+
+                            if(tmpString.contains("%")){
+                                String perc = tmpString.substring(0, tmpString.indexOf("%")).trim();
+
+                                if(tmpString.contains("limelight.jar' saved")){
+                                    System.out.println("exit-status: " + channel.getExitStatus());
+                                    dispatchEventBus(con, new LimelightDownloadedEvent(true));
+                                    break;
+                                }
+
+                                if(isNumeric(perc)){
+                                    dispatchEventBus(con, new LimelightDownloadedEvent(Integer.parseInt(perc)));
+                                } else {
+                                    dispatchEventBus(con, new LimelightDownloadedEvent(-1));
+                                }
+                            }
                         }
 
                         if (channel.isClosed()) {
                             if (in.available() > 0) continue;
                             System.out.println("exit-status: " + channel.getExitStatus());
 
-                            dispatchEventBus(con, new LimelightDownloadedEvent());
+                            dispatchEventBus(con, new LimelightDownloadedEvent(true));
                             break;
                         }
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(100);
                         } catch (Exception ee) {
                         }
                     }
@@ -167,6 +265,19 @@ public class SSHManager {
         };
 
         thread.start();
+    }
+
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
     }
 
     public void dispatchEventBus(Context con, final Object event){

@@ -21,7 +21,7 @@ public class Global extends Application {
         singleton = this;
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/RalewayThin.ttf")
+                        .setDefaultFontPath("fonts/RalewayMedium.ttf")
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );
