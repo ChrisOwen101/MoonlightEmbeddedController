@@ -1,5 +1,8 @@
 <component name="libraryTable">
   <library name="materialloadingprogressbar-0.5.3-RELEASE">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.3-RELEASE/annotations.zip!/" />
+    </ANNOTATIONS>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.3-RELEASE/res" />
       <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.lsjwzh/materialloadingprogressbar/0.5.3-RELEASE/classes.jar!/" />

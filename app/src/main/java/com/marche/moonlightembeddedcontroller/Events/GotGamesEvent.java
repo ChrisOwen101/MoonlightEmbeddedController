@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class GotGamesEvent {
 
-    ArrayList<String> gameNames = new ArrayList<>();
+    public ArrayList<String> gameNames = new ArrayList<>();
 
     public GotGamesEvent( ArrayList<String> gameNames){
         this.gameNames = gameNames;

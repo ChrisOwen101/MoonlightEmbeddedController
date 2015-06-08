@@ -82,6 +82,52 @@ public class SSHManager {
         thread.start();
     }
 
+    public void playGame(final Context con, final String gameName) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    // SSH Channel
+                    ChannelExec channel = (ChannelExec) session.openChannel("exec");
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    channel.setOutputStream(baos);
+
+                    // Execute command
+                    channel.setCommand("java -jar "+ device.directory + "/limelight.jar -app \"" + gameName + "\" stream");
+                    channel.connect();
+
+                    InputStream in = channel.getInputStream();
+                    byte[] tmp = new byte[1024];
+                    String tmpString = "";
+                    while (true) {
+                        while (in.available() > 0) {
+                            int i = in.read(tmp, 0, 1024);
+                            if (i < 0) break;
+                            tmpString = tmpString+new String(tmp, 0, i);
+                            System.out.print(new String(tmp, 0, i));
+                        }
+
+                        if (channel.isClosed()) {
+                            if (in.available() > 0) continue;
+                            System.out.println("exit-status: " + channel.getExitStatus());
+                            break;
+                        }
+                        try {
+                            Thread.sleep(500);
+                        } catch (Exception ee) {
+                        }
+                    }
+                    channel.disconnect();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        };
+
+        thread.start();
+    }
+
+
     public void doesLimelightExist(final Context con, final Device device) {
         this.device = device;
 
@@ -122,7 +168,7 @@ public class SSHManager {
                             break;
                         }
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(500);
                         } catch (Exception ee) {
                         }
                     }
@@ -162,12 +208,9 @@ public class SSHManager {
                             if (i < 0) break;
 
                             String tmpString = new String(tmp, 0, i);
-                            System.out.println(tmpString);
-
                             if(gamesIncoming){
-                                tmpString = tmpString.replace("(DX 11)", "");
-                                tmpString = tmpString.replace("(DX 10)", "");
-                                gameNames.add(tmpString.trim());
+                                System.out.println(tmpString);
+                                gameNames.add(tmpString);
                             }
 
                             if(tmpString.contains("Search apps")){
@@ -183,7 +226,7 @@ public class SSHManager {
                             break;
                         }
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(50);
                         } catch (Exception ee) {
                         }
                     }
