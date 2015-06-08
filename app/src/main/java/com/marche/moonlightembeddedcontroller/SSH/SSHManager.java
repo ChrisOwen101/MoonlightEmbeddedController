@@ -6,11 +6,14 @@ import android.content.Context;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.marche.moonlightembeddedcontroller.Events.LimelightDownloadedEvent;
 import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
+import com.marche.moonlightembeddedcontroller.Events.MainThreadBus;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
-import com.squareup.otto.Bus;
+import com.marche.moonlightembeddedcontroller.Events.SSHError;
+import com.marche.moonlightembeddedcontroller.POJO.Device;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -25,7 +28,7 @@ public class SSHManager {
 
     private static SSHManager instance = null;
 
-    public Bus SSHBus = new Bus();
+    public MainThreadBus SSHBus = new MainThreadBus();
     private JSch jsch;
     private Session session;
 
@@ -36,14 +39,14 @@ public class SSHManager {
         return instance;
     }
 
-    public void connectToSSH(final Context con, final String ip, final String username,final String password){
+    public void connectToSSH(final Context con, final Device device){
         Thread thread = new Thread() {
             @Override
             public void run() {
                 try{
                     jsch = new JSch();
-                    session = jsch.getSession(username,ip, 22);
-                    session.setPassword(password);
+                    session = jsch.getSession(device.login, device.ip, 22);
+                    session.setPassword(device.password);
 
                     // Avoid asking for key confirmation
                     Properties prop = new Properties();
@@ -54,10 +57,10 @@ public class SSHManager {
 
                     dispatchEventBus(con, new SSHConnected());
 
-                }
-                catch (Exception e)
-                {
-                    System.out.println(e.getMessage());
+                } catch (JSchException e){
+                    if(e.getMessage().contains("ECONNREFUSED")){
+                        SSHBus.post(new SSHError());
+                    }
                 }
             }
         };
@@ -76,7 +79,7 @@ public class SSHManager {
                     channel.setOutputStream(baos);
 
                     // Execute command
-                    channel.setCommand("[ -d limelight ] && echo \"yes\" || echo \"no\"");
+                    channel.setCommand("[ -d limelightTest ] && echo \"yes\" || echo \"no\"");
                     channel.connect();
 
                     InputStream in = channel.getInputStream();
