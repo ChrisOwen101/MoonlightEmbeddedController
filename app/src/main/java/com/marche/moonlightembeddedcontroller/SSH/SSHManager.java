@@ -8,6 +8,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.marche.moonlightembeddedcontroller.Events.GotGamesEvent;
 import com.marche.moonlightembeddedcontroller.Events.LimelightDownloadedEvent;
 import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
 import com.marche.moonlightembeddedcontroller.Events.MainThreadBus;
@@ -20,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -129,15 +131,61 @@ public class SSHManager {
         doesLimelightExist(con, "limelight/limelight.jar");
     }
 
-    public void startTimeOut(final int length){
+    public void getGames(final Context con) {
         Thread thread = new Thread() {
             @Override
             public void run() {
                 try {
-                    sleep(length);
+                    Channel channel=session.openChannel("shell");
+                    OutputStream ops = channel.getOutputStream();
+                    PrintStream ps = new PrintStream(ops, true);
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    channel.connect();
+                    ps.println("cd limelight");
+                    ps.println("java -jar limelight.jar list");
+                    //give commands to be executed inside println.and can have any no of commands sent.
+                    ps.close();
+
+                    boolean gamesIncoming = false;
+
+                    ArrayList<String> gameNames = new ArrayList<>();
+
+                    InputStream in = channel.getInputStream();
+                    byte[] tmp = new byte[1024];
+                    while (true) {
+                        while (in.available() > 0) {
+                            int i = in.read(tmp, 0, 1024);
+                            if (i < 0) break;
+
+                            String tmpString = new String(tmp, 0, i);
+                            System.out.println(tmpString);
+
+                            if(gamesIncoming){
+                                tmpString = tmpString.replace("(DX 11)", "");
+                                tmpString = tmpString.replace("(DX 10)", "");
+                                gameNames.add(tmpString.trim());
+                            }
+
+                            if(tmpString.contains("Search apps")){
+                                gamesIncoming = true;
+                            }
+                        }
+
+                        if (channel.isClosed()) {
+                            if (in.available() > 0) continue;
+                            System.out.println("exit-status: " + channel.getExitStatus());
+
+                            dispatchEventBus(con, new GotGamesEvent(gameNames));
+                            break;
+                        }
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ee) {
+                        }
+                    }
+                    channel.disconnect();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
         };
@@ -159,8 +207,6 @@ public class SSHManager {
                     ps.println("java -jar limelight.jar pair");
                     //give commands to be executed inside println.and can have any no of commands sent.
                     ps.close();
-
-                    startTimeOut(8000);
 
                     InputStream in = channel.getInputStream();
                     byte[] tmp = new byte[1024];
@@ -187,8 +233,6 @@ public class SSHManager {
                         if (channel.isClosed()) {
                             if (in.available() > 0) continue;
                             System.out.println("exit-status: " + channel.getExitStatus());
-
-                            dispatchEventBus(con, new LimelightDownloadedEvent(true));
                             break;
                         }
                         try {
