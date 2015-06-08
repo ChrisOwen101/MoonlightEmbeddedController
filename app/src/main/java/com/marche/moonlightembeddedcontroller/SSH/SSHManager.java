@@ -364,6 +364,31 @@ public class SSHManager {
         thread.start();
     }
 
+    public void downloadMappings(final Context con, final String mappingURL) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Channel channel=session.openChannel("shell");
+                    OutputStream ops = channel.getOutputStream();
+                    PrintStream ps = new PrintStream(ops, true);
+
+                    channel.connect();
+                    ps.println("cd " + device.directory);
+                    ps.println("wget " + mappingURL);
+                    //give commands to be executed inside println.and can have any no of commands sent.
+                    ps.close();
+
+                    channel.disconnect();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        };
+
+        thread.start();
+    }
+
     public static boolean isNumeric(String str)
     {
         try

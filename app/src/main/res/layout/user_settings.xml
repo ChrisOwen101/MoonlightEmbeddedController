@@ -2,17 +2,40 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent">
-    <EditTextPreference android:title="Your Name"
-        android:key="username"
-        android:summary="Please provide your username"></EditTextPreference>
 
-    <CheckBoxPreference android:title="Application Updates"
-        android:defaultValue="false"
-        android:summary="This option if selected will allow the application to check for latest versions."
-        android:key="applicationUpdates" />
     <ListPreference
-        android:title="Download Details"
-        android:summary="Select the kind of data that you would like to download"
-        android:key="downloadType"
-        android:defaultValue="1" />
+        android:title="Resolution"
+        android:summary="Stream in 720p or 1080p?"
+        android:key="resolution"
+        android:defaultValue="720p"
+        android:entries="@array/resolutionArray"
+        android:entryValues="@array/resolutionArray" />
+
+    <ListPreference
+        android:title="Frames per Second"
+        android:summary="Stream in 30 or 60 FPS?"
+        android:key="fps"
+        android:defaultValue="30fps"
+        android:entries="@array/fpsArray"
+        android:entryValues="@array/fpsArray" />
+
+    <Preference
+        android:title="Controller Mappings"
+        android:summary="Download and use controller mappings to allow play with Xbox controllers"
+        android:key="mappings"
+        android:enabled="true"
+        />
+
+    <CheckBoxPreference
+        android:title="Modify Game Settings"
+        android:defaultValue="true"
+        android:summary="Do you want GeForce Experience to be able to modify the settings of your games?"
+        android:key="nosops" />
+
+    <CheckBoxPreference
+        android:title="Local Audio"
+        android:defaultValue="true"
+        android:summary="Audio should be played locally?"
+        android:key="audio" />
+
 </PreferenceScreen>

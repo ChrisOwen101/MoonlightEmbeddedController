@@ -1,0 +1,15 @@
+<resources>
+    <string-array name="resolutionArray">
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+
+    <string-array name="fpsArray">
+        <item>30fps</item>
+        <item>60fps</item>
+    </string-array>
+
+    <string-array name="mappingsArray">
+        <item>Xbox</item>
+    </string-array>
+</resources>
