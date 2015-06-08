@@ -105,6 +105,8 @@ public class PairFragment extends Fragment {
 
     @OnClick(R.id.Next)
     public void next(View view) {
+        saveDevice();
+
         FragmentManager fm = getFragmentManager();
         fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
