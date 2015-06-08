@@ -1,6 +1,7 @@
 package com.marche.moonlightembeddedcontroller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -67,6 +68,8 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(getApplicationContext(), UserSettingActivity.class);
+            startActivity(i);
             return true;
         }
 

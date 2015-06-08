@@ -19,6 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".UserSettingActivity"
+            android:label="Settings"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog.Alert">
+        </activity>
+
     </application>
 
 </manifest>

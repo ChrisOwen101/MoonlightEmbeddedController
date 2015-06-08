@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
@@ -81,13 +82,10 @@ public class GameFragment extends Fragment {
             gameNames.addAll(Arrays.asList(lines));
         }
 
-        System.out.println(gameNames.size());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, gameNames);
+        listView.setAdapter(adapter);
 
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, gameNames);
-
-        //listView.setAdapter(adapter);
-
-        queryGames(gameNames);
+        //queryGames(gameNames);
     }
 
     @OnItemClick(R.id.listView)
