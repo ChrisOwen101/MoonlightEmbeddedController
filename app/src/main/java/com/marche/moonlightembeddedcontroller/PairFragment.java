@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.dd.CircularProgressButton;
 import com.marche.moonlightembeddedcontroller.Events.PairEvent;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
@@ -50,12 +51,38 @@ public class PairFragment extends Fragment {
 
     @Subscribe
     public void PairEvent(PairEvent event){
-        loginButton.setIndeterminateProgressMode(false);
-        loginButton.setProgress(100);
-        loginButton.setCompleteText(event.pairCode);
+        if(event.didPair){
+            loginButton.setIndeterminateProgressMode(false);
+            loginButton.setProgress(100);
+            loginButton.setCompleteText("Paired!");
 
-        next.setVisibility(View.VISIBLE);
-        nextText.setVisibility(View.VISIBLE);
+            next.setVisibility(View.VISIBLE);
+        } else {
+            if(event.pairCode.isEmpty()){
+                showErrorDialog();
+            } else {
+                loginButton.setIndeterminateProgressMode(false);
+                loginButton.setProgress(0);
+                loginButton.setIdleText(event.pairCode);
+            }
+        }
+    }
+
+    public void showErrorDialog(){
+        loginButton.setProgress(-1);
+
+        new MaterialDialog.Builder(getActivity())
+                .title("Woops")
+                .content("Looks like I dropped the ball there sorry. Try going to Geforce Experience on your computer, go to settings, then click Forget Devices. Click the button above to give this another shot.")
+                .positiveText("Righty Oh'")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        loginButton.setProgress(0);
+                        loginButton.setIdleText("Pair");
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.loginButton)
@@ -65,4 +92,10 @@ public class PairFragment extends Fragment {
 
         SSHManager.getInstance().pairComputer(getActivity());
     }
+
+    @OnClick(R.id.Next)
+    public void next(View view) {
+
+    }
+
 }

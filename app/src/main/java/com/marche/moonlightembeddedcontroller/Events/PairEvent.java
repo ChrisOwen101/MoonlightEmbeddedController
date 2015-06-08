@@ -5,9 +5,15 @@ package com.marche.moonlightembeddedcontroller.Events;
  */
 public class PairEvent {
 
-    public String pairCode;
+    public String pairCode = "";
+    public boolean didPair = false;
 
     public PairEvent(String pairCode){
         this.pairCode = pairCode;
     }
+
+    public PairEvent(boolean didPair){
+        this.didPair = didPair;
+    }
+
 }

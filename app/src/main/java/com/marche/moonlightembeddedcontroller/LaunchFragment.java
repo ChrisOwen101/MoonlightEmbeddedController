@@ -90,7 +90,6 @@ public class LaunchFragment extends Fragment {
     @Subscribe
     public void LimelightExistsEvent(LimelightExistsEvent event){
         if(event.doesExist){
-            // Create new fragment and transaction
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.container, new PairFragment());
             transaction.addToBackStack(null);

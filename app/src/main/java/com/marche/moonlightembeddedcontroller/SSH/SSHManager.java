@@ -175,6 +175,12 @@ public class SSHManager {
                             if(tmpString.contains("Please enter the following")){
                                 String pairCode = tmpString.replaceAll("\\D+","");
                                 dispatchEventBus(con, new PairEvent(pairCode));
+                            } else if(tmpString.contains("Paired successfully")){
+                                dispatchEventBus(con, new PairEvent(true));
+                                break;
+                            } else if(tmpString.contains("Pairing failed")){
+                                dispatchEventBus(con, new PairEvent(false));
+                                break;
                             }
                         }
 
