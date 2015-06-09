@@ -31,17 +31,19 @@ public class UserSettingActivity extends PreferenceActivity {
                 new MaterialDialog.Builder(con)
                         .title("Controller Mappings")
                         .items(R.array.mappingsArray)
-                        .itemsCallback(new MaterialDialog.ListCallback() {
+                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
-                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 if (text.equals("Xbox")) {
                                     SSHManager.getInstance().downloadMappings(con , "https://raw.githubusercontent.com/RoelofBerg/limelightpisteambox/master/xbox.map");
                                     SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(con).edit();
                                     editor.putString("mappings", "xbox.map");
                                     editor.commit();
                                 }
+                                return true;
                             }
                         })
+                        .positiveText("Download & Use")
                         .show();
                 return true;
             }

@@ -208,8 +208,9 @@ public class SSHManager {
                             if (i < 0) break;
 
                             String tmpString = new String(tmp, 0, i);
+                            System.out.println(tmpString);
+
                             if(gamesIncoming){
-                                System.out.println(tmpString);
                                 gameNames.add(tmpString);
                             }
 

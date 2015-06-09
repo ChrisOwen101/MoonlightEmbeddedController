@@ -6,10 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
+import com.marche.moonlightembeddedcontroller.Adapter.GameAdapter;
 import com.marche.moonlightembeddedcontroller.Events.GotGamesEvent;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
 import com.marche.moonlightembeddedcontroller.POJO.Container;
@@ -29,6 +32,7 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.converter.GsonConverter;
 
 /**
  * Created by Chris.Owen on 01/06/2015.
@@ -43,7 +47,7 @@ public class GameFragment extends Fragment {
     @InjectView(R.id.listView)
     ListView listView;
 
-    public ArrayList<String> gameNames = new ArrayList<>();
+    GameAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -74,28 +78,29 @@ public class GameFragment extends Fragment {
 
     @Subscribe
     public void GotGamesEvent(GotGamesEvent event){
-        loadingSpinner.setVisibility(View.GONE);
-        listView.setVisibility(View.VISIBLE);
+        ArrayList<String> gameNames = new ArrayList<>();
 
         for(String names : event.gameNames){
             String lines[] = names.split("\\r?\\n");
             gameNames.addAll(Arrays.asList(lines));
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, gameNames);
-        listView.setAdapter(adapter);
-
-        //queryGames(gameNames);
+        queryGames(gameNames);
     }
 
     @OnItemClick(R.id.listView)
     public void onItemClick(int position) {
-        SSHManager.getInstance().playGame(getActivity(), gameNames.get(position));
+        SSHManager.getInstance().playGame(getActivity(), adapter.getItem(position).getName());
     }
 
     public void queryGames(final ArrayList<String> gameNames ){
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://www.giantbomb.com/api")
+                .setConverter(new GsonConverter(gson))
                 .build();
 
         GamesAPIService service = restAdapter.create(GamesAPIService.class);
@@ -103,7 +108,12 @@ public class GameFragment extends Fragment {
         final ArrayList<Result> game = new ArrayList<>();
 
         for(String gameName : gameNames){
-            service.searchForGame(gameName, new Callback<Container>() {
+            service.searchForGame("2625851d1a8f443018012f69e58db1474c62bb1d",
+                    "json" ,
+                    gameName,
+                    "game",
+                    1,
+                 new Callback<Container>() {
                 @Override
                 public void success(Container container, Response response) {
                     game.add(container.getResults().get(0));
@@ -122,9 +132,11 @@ public class GameFragment extends Fragment {
     }
 
     public void displayGames(ArrayList<Result> games){
-        for(Result game: games){
-            System.out.println(game.getDescription());
-        }
+        loadingSpinner.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
+
+        adapter = new GameAdapter(getActivity(),R.layout.game_list, games);
+        listView.setAdapter(adapter);
     }
 
     @Override
