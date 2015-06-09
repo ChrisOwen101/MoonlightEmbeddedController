@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
+import com.marche.moonlightembeddedcontroller.Events.RefreshGames;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
+import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -70,6 +72,9 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             Intent i = new Intent(getApplicationContext(), UserSettingActivity.class);
             startActivity(i);
+            return true;
+        } else if (id == R.id.action_reload) {
+            SSHManager.getInstance().SSHBus.post(new RefreshGames());
             return true;
         }
 

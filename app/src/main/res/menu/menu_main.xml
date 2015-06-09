@@ -5,4 +5,9 @@
         android:icon="@drawable/ic_settings_box"
         android:title="Settings"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_reload"
+        android:icon="@drawable/ic_reload"
+        android:title="Reload"
+        app:showAsAction="ifRoom" />
 </menu>

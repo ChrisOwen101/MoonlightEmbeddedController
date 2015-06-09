@@ -1,6 +1,8 @@
 package com.marche.moonlightembeddedcontroller;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,9 +14,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.marche.moonlightembeddedcontroller.Adapter.GameAdapter;
 import com.marche.moonlightembeddedcontroller.Events.GotGamesEvent;
+import com.marche.moonlightembeddedcontroller.Events.RefreshGames;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
 import com.marche.moonlightembeddedcontroller.POJO.Container;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
@@ -23,6 +27,7 @@ import com.marche.moonlightembeddedcontroller.RESTAPI.GamesAPIService;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -66,15 +71,35 @@ public class GameFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if(SSHManager.getInstance().isConnected){
-            SSHManager.getInstance().getGames(getActivity());
+            loadGames();
         } else {
             SSHManager.getInstance().connectToSSH(getActivity(), device);
         }
     }
 
+    public void loadGames(){
+        String games = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("games", "");
+
+        if(games.isEmpty()){
+            SSHManager.getInstance().getGames(getActivity());
+        } else {
+            Type typeOfT = new TypeToken <ArrayList<Result>>(){}.getType();
+            ArrayList<Result> results = new Gson().fromJson(games, typeOfT );
+            displayGames(results);
+        }
+    }
+
+    @Subscribe
+    public void RefreshGamesEvent(RefreshGames event){
+        loadingSpinner.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.GONE);
+
+        SSHManager.getInstance().getGames(getActivity());
+    }
+
     @Subscribe
     public void SSHConnectedEvent(SSHConnected event){
-        SSHManager.getInstance().getGames(getActivity());
+        loadGames();
     }
 
     @Subscribe
@@ -147,6 +172,11 @@ public class GameFragment extends Fragment {
     public void displayGames(ArrayList<Result> games){
         loadingSpinner.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
+
+        String jsonGames = new Gson().toJson(games);
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+        editor.putString("games", jsonGames);
+        editor.commit();
 
         adapter = new GameAdapter(getActivity(),R.layout.game_list, games);
         listView.setAdapter(adapter);

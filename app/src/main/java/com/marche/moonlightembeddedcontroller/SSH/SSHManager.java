@@ -84,7 +84,7 @@ public class SSHManager {
     }
 
     public String buildPlayGameCommand(Context con, String gameName){
-        String command = "java -jar "+ device.directory + "/limelight.jar -app \"" + gameName + "\"";
+        String command = "cd " + device.directory + "; java -jar limelight.jar -app \"" + gameName + "\"";
 
         String resolution = PreferenceManager.getDefaultSharedPreferences(con).getString("resolution", "720p");
         String fps = PreferenceManager.getDefaultSharedPreferences(con).getString("fps", "30fps");
@@ -234,7 +234,7 @@ public class SSHManager {
                     channel.setOutputStream(baos);
 
                     // Execute command
-                    channel.setCommand("java -jar " + device.directory + "/limelight.jar list");
+                    channel.setCommand("cd " + device.directory + "; java -jar limelight.jar list");
                     channel.connect();
 
                     boolean gamesIncoming = false;
