@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -91,6 +92,12 @@ public class GameFragment extends Fragment {
     @OnItemClick(R.id.listView)
     public void onItemClick(int position) {
         SSHManager.getInstance().playGame(getActivity(), adapter.getItem(position).getName());
+
+        new MaterialDialog.Builder(getActivity())
+                .title("Staring " + adapter.getItem(position).getName())
+                .content("This'll just take a second...")
+                .progress(true, 0)
+                .show();
     }
 
     public void queryGames(final ArrayList<String> gameNames ){
@@ -108,26 +115,32 @@ public class GameFragment extends Fragment {
         final ArrayList<Result> game = new ArrayList<>();
 
         for(String gameName : gameNames){
-            service.searchForGame("2625851d1a8f443018012f69e58db1474c62bb1d",
-                    "json" ,
-                    gameName,
-                    "game",
-                    1,
-                 new Callback<Container>() {
-                @Override
-                public void success(Container container, Response response) {
-                    game.add(container.getResults().get(0));
+            if(gameName.equals("Steam")){
+                Result r = new Result();
+                r.setName("Steam");
+                game.add(r);
+            } else {
+                service.searchForGame("2625851d1a8f443018012f69e58db1474c62bb1d",
+                        "json" ,
+                        gameName,
+                        "game",
+                        1,
+                        new Callback<Container>() {
+                            @Override
+                            public void success(Container container, Response response) {
+                                game.add(container.getResults().get(0));
 
-                    if(game.size() == gameNames.size()){
-                        displayGames(game);
-                    }
-                }
+                                if(game.size() == gameNames.size()){
+                                    displayGames(game);
+                                }
+                            }
 
-                @Override
-                public void failure(RetrofitError error) {
+                            @Override
+                            public void failure(RetrofitError error) {
 
-                }
-            });
+                            }
+                        });
+            }
         }
     }
 

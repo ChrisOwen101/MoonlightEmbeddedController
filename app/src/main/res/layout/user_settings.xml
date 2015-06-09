@@ -34,8 +34,8 @@
 
     <CheckBoxPreference
         android:title="Local Audio"
-        android:defaultValue="true"
-        android:summary="Audio should be played locally?"
+        android:defaultValue="false"
+        android:summary="Audio should be played on the mian computer?"
         android:key="audio" />
 
 </PreferenceScreen>

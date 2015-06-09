@@ -2,6 +2,7 @@ package com.marche.moonlightembeddedcontroller.SSH;
 
 import android.app.Activity;
 import android.content.Context;
+import android.preference.PreferenceManager;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -82,6 +83,46 @@ public class SSHManager {
         thread.start();
     }
 
+    public String buildPlayGameCommand(Context con, String gameName){
+        String command = "java -jar "+ device.directory + "/limelight.jar -app \"" + gameName + "\"";
+
+        String resolution = PreferenceManager.getDefaultSharedPreferences(con).getString("resolution", "720p");
+        String fps = PreferenceManager.getDefaultSharedPreferences(con).getString("fps", "30fps");
+        String mappings = PreferenceManager.getDefaultSharedPreferences(con).getString("mappings", "");
+        boolean nosops = PreferenceManager.getDefaultSharedPreferences(con).getBoolean("nosops", false);
+        boolean localaudio = PreferenceManager.getDefaultSharedPreferences(con).getBoolean("audio", false);
+
+        if(resolution.equalsIgnoreCase("720p")){
+            command += " -720 ";
+        } else {
+            command += " -1080 ";
+        }
+
+        if(fps.equalsIgnoreCase("30fps")){
+            command += " -30fps ";
+        } else {
+            command += " -60fps ";
+        }
+
+        if(!mappings.isEmpty()){
+            command += " -mapping " + device.directory + "/xbox.map ";
+        }
+
+        if(!nosops){
+            command += " -nosops ";
+        }
+
+        if(localaudio){
+            command += " -localaudio ";
+        }
+
+        command += "stream";
+
+        System.out.println(command);
+
+        return command;
+    }
+
     public void playGame(final Context con, final String gameName) {
         Thread thread = new Thread() {
             @Override
@@ -93,7 +134,7 @@ public class SSHManager {
                     channel.setOutputStream(baos);
 
                     // Execute command
-                    channel.setCommand("java -jar "+ device.directory + "/limelight.jar -app \"" + gameName + "\" stream");
+                    channel.setCommand(buildPlayGameCommand(con, gameName));
                     channel.connect();
 
                     InputStream in = channel.getInputStream();
@@ -227,7 +268,7 @@ public class SSHManager {
                             break;
                         }
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(1000);
                         } catch (Exception ee) {
                         }
                     }
@@ -380,6 +421,27 @@ public class SSHManager {
                     //give commands to be executed inside println.and can have any no of commands sent.
                     ps.close();
 
+                    InputStream in = channel.getInputStream();
+                    byte[] tmp = new byte[1024];
+                    while (true) {
+                        while (in.available() > 0) {
+                            int i = in.read(tmp, 0, 1024);
+                            if (i < 0) break;
+
+                            String tmpString = new String(tmp, 0, i);
+                            System.out.println(tmpString);
+                        }
+
+                        if (channel.isClosed()) {
+                            if (in.available() > 0) continue;
+                            System.out.println("exit-status: " + channel.getExitStatus());
+                            break;
+                        }
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ee) {
+                        }
+                    }
                     channel.disconnect();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
