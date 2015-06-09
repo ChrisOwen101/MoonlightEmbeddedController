@@ -65,13 +65,13 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
-                    android:text="Huge thanks to:
-
-    Cameron Gutman
-    Diego Waxemberg
-    Aaron Neyer
-    Michelle Bergeron
-    Andrew Hennessy
+                    android:text="Huge thanks to:\n
+\n
+    Cameron Gutman\n
+    Diego Waxemberg\n
+    Aaron Neyer\n
+    Michelle Bergeron\n
+    Andrew Hennessy\n
 
     The orginal creators of Moonlight and without which none of this would be possible."
                     android:padding="5dp"
@@ -99,41 +99,41 @@
                     android:layout_height="match_parent"
                     android:autoLink="web"
                     android:linksClickable="true"
-                    android:text="I use the following open source application in this application:
-
-http://developer.android.com/tools/support-library
-        com.android.support:cardview-v7
-        com.android.support:appcompat-v7
-
-        http://square.github.io/otto/
-        com.squareup:otto
-
-        http://square.github.io/retrofit/
-        com.squareup.retrofit:retrofit
-
-        http://square.github.io/okhttp/
-        com.squareup.okhttp:okhttp
-
-        https://github.com/chrisjenx/Calligraphy
-        uk.co.chrisjenx:calligraphy
-
-https://github.com/dmytrodanylyk/circular-progress-button
-        com.github.dmytrodanylyk.circular-progress-button
-
-        http://jakewharton.github.io/butterknife/
-        com.jakewharton:butterknife
-
-https://github.com/afollestad/material-dialogs
-        com.afollestad:material-dialogs
-
-https://github.com/lsjwzh/MaterialLoadingProgressBar
-        com.lsjwzh:materialloadingprogressbar
-
-https://github.com/bumptech/glide
-        com.github.bumptech.glide:glide
-
-https://github.com/twotoasters/JazzyListView
-        com.twotoasters.jazzylistview:library
+                    android:text="I use the following open source application in this application:\n
+\n
+http://developer.android.com/tools/support-library\n
+        com.android.support:cardview-v7\n
+        com.android.support:appcompat-v7\n
+\n
+        http://square.github.io/otto/\n
+        com.squareup:otto\n
+\n
+        http://square.github.io/retrofit/\n
+        com.squareup.retrofit:retrofit\n
+\n
+        http://square.github.io/okhttp/\n
+        com.squareup.okhttp:okhttp\n
+\n
+        https://github.com/chrisjenx/Calligraphy\n
+        uk.co.chrisjenx:calligraphy\n
+\n
+https://github.com/dmytrodanylyk/circular-progress-button\n
+        com.github.dmytrodanylyk.circular-progress-button\n
+\n
+        http://jakewharton.github.io/butterknife/\n
+        com.jakewharton:butterknife\n
+\n
+https://github.com/afollestad/material-dialogs\n
+        com.afollestad:material-dialogs\n
+\n
+https://github.com/lsjwzh/MaterialLoadingProgressBar\n
+        com.lsjwzh:materialloadingprogressbar\n
+\n
+https://github.com/bumptech/glide\n
+        com.github.bumptech.glide:glide\n
+\n
+https://github.com/twotoasters/JazzyListView\n
+        com.twotoasters.jazzylistview:library\n
         "
                     android:padding="5dp"
                     android:textSize="14sp"
