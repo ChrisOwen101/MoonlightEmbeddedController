@@ -180,10 +180,17 @@ public class LaunchFragment extends Fragment {
                         if(inetAddress.isReachable(1000)){
                             Log.d("scan", inetAddress.getHostName());
 
-                            deviceNames.add(inetAddress.getHostName());
+                            deviceNames.add(inetAddress.getHostName().replace(".home", ""));
                             deviceIPs.add(subnet + String.valueOf(j));
 
-                            aa.notifyDataSetChanged();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    aa.clear();
+                                    aa.addAll(deviceNames);
+                                    aa.notifyDataSetChanged();
+                                }
+                            });
                         }
                     } catch (UnknownHostException e) {
                         e.printStackTrace();

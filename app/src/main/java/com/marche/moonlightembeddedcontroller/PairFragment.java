@@ -108,7 +108,7 @@ public class PairFragment extends Fragment {
         saveDevice();
 
         FragmentManager fm = getFragmentManager();
-        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fm.popBackStack("all", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Bundle b = new Bundle();
         b.putSerializable("device", device);
