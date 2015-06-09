@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -75,6 +76,12 @@ public class MainActivity extends ActionBarActivity {
             return true;
         } else if (id == R.id.action_reload) {
             SSHManager.getInstance().SSHBus.post(new RefreshGames());
+            return true;
+        } else if (id == R.id.action_credits) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, new CreditsFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
             return true;
         }
 

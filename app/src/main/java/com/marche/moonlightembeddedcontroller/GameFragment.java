@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.FieldNamingPolicy;
@@ -26,6 +25,8 @@ import com.marche.moonlightembeddedcontroller.POJO.Result;
 import com.marche.moonlightembeddedcontroller.RESTAPI.GamesAPIService;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
+import com.twotoasters.jazzylistview.JazzyListView;
+import com.twotoasters.jazzylistview.effects.SlideInEffect;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class GameFragment extends Fragment {
     CircleProgressBar loadingSpinner;
 
     @InjectView(R.id.listView)
-    ListView listView;
+    JazzyListView listView;
 
     GameAdapter adapter;
 
@@ -59,6 +60,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_games, container, false);
         ButterKnife.inject(this, rootView);
+        listView.setTransitionEffect(new SlideInEffect());
 
         Bundle bundle = this.getArguments();
         device = (Device) bundle.getSerializable("device");

@@ -3,9 +3,11 @@ package com.marche.moonlightembeddedcontroller;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -18,6 +20,11 @@ import com.marche.moonlightembeddedcontroller.POJO.Device;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -29,6 +36,9 @@ public class LaunchFragment extends Fragment {
 
     @InjectView(R.id.loginButton)
     CircularProgressButton loginButton;
+
+    @InjectView(R.id.findIP)
+    CircularProgressButton findIPButton;
 
     @InjectView(R.id.ipaddress)
     EditText ipaddressEditText;
@@ -55,7 +65,14 @@ public class LaunchFragment extends Fragment {
 
         device = new Device(ipaddressEditText.getText().toString(), loginEditText.getText().toString(), passwordEditText.getText().toString());
         SSHManager.getInstance().connectToSSH(getActivity(), device);
+
     }
+
+    @OnClick(R.id.findIP)
+    public void findIP(View view) {
+        openSearchIPDialog();
+    }
+
 
     @Subscribe
     public void SSHConnectedEvent(SSHConnected event){
@@ -89,6 +106,8 @@ public class LaunchFragment extends Fragment {
             b.putSerializable("device", device);
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
+
             PairFragment pair = new PairFragment();
             pair.setArguments(b);
 
@@ -143,6 +162,58 @@ public class LaunchFragment extends Fragment {
                 .show();
     }
 
+    ArrayList<String> deviceIPs = new ArrayList<>();
+    ArrayList<String> deviceNames = new ArrayList<>();
+    ArrayAdapter<String> aa;
+
+    private void scanSubNet(final String subnet){
+        deviceIPs = new ArrayList<>();
+        deviceNames = new ArrayList<>();
+
+        for(int i=1; i<255; i++){
+            final int j = i;
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        InetAddress inetAddress = InetAddress.getByName(subnet + String.valueOf(j));
+                        if(inetAddress.isReachable(1000)){
+                            Log.d("scan", inetAddress.getHostName());
+
+                            deviceNames.add(inetAddress.getHostName());
+                            deviceIPs.add(subnet + String.valueOf(j));
+
+                            aa.notifyDataSetChanged();
+                        }
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            thread.start();
+        }
+    }
+
+    public void openSearchIPDialog(){
+        aa = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, deviceNames);
+        new MaterialDialog.Builder(getActivity())
+                .title("Search For Device")
+                .adapter(aa,
+                        new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                                ipaddressEditText.setText(deviceIPs.get(which));
+                                dialog.dismiss();
+                            }
+                        })
+                .show();
+
+        scanSubNet("192.168.1.");
+    }
+
     public void showDirectoryDialog(){
         new MaterialDialog.Builder(getActivity())
                 .title("Directory")
@@ -150,7 +221,6 @@ public class LaunchFragment extends Fragment {
                 .input("", "", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-
                         String dir = input.toString();
                         dir = dir.replace("/limelight.jar", "");
                         device.directory = dir;

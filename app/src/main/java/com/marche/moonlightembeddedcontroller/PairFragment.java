@@ -114,6 +114,8 @@ public class PairFragment extends Fragment {
         b.putSerializable("device", device);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
+
         GameFragment pair = new GameFragment();
         pair.setArguments(b);
 

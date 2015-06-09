@@ -10,4 +10,8 @@
         android:icon="@drawable/ic_reload"
         android:title="Reload"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_credits"
+        android:title="Credits"
+        app:showAsAction="collapseActionView" />
 </menu>

@@ -46,12 +46,14 @@ public class GameAdapter extends ArrayAdapter<Result> {
                     .load(R.drawable.steam)
                     .centerCrop()
                     .crossFade()
+                    .thumbnail(0.1f)
                     .into(holder.picture);
         } else {
             if(r.getImage() != null && r.getImage().getScreenUrl() != null){
                 Glide.with(getContext())
                         .load(r.getImage().getScreenUrl())
                         .centerCrop()
+                        .thumbnail(0.1f)
                         .crossFade()
                         .into(holder.picture);
             }

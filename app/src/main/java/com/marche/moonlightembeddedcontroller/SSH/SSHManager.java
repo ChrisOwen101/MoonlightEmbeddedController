@@ -316,6 +316,9 @@ public class SSHManager {
                             } else if(tmpString.contains("Pairing failed")){
                                 dispatchEventBus(con, new PairEvent(false));
                                 break;
+                            } else if(tmpString.contains("Already paired")){
+                                dispatchEventBus(con, new PairEvent(true));
+                                break;
                             }
                         }
 
