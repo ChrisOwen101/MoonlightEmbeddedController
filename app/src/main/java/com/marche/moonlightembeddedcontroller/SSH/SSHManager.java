@@ -9,6 +9,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.marche.moonlightembeddedcontroller.Events.GameLoadingEvent;
 import com.marche.moonlightembeddedcontroller.Events.GotGamesEvent;
 import com.marche.moonlightembeddedcontroller.Events.LimelightDownloadedEvent;
 import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
@@ -146,11 +147,19 @@ public class SSHManager {
                             if (i < 0) break;
                             tmpString = tmpString+new String(tmp, 0, i);
                             System.out.print(new String(tmp, 0, i));
+
+                            if(tmpString.contains("input connection")){
+                                SSHBus.post(new GameLoadingEvent(true));
+                            } else {
+                                SSHBus.post(new GameLoadingEvent(tmpString));
+                            }
                         }
 
                         if (channel.isClosed()) {
                             if (in.available() > 0) continue;
                             System.out.println("exit-status: " + channel.getExitStatus());
+                            SSHBus.post(new GameLoadingEvent(true));
+
                             break;
                         }
                         try {

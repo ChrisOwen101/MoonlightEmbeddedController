@@ -50,9 +50,7 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Moonlight Controller");
-        actionBar.setIcon(R.mipmap.ic_launcher);
+        setupActionBar();
     }
 
     @Override
@@ -60,6 +58,12 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void setupActionBar(){
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Moonlight Controller");
+        actionBar.setIcon(R.mipmap.ic_launcher);
     }
 
     @Override

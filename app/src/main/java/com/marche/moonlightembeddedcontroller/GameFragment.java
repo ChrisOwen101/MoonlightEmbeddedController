@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.FieldNamingPolicy;
@@ -16,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 import com.marche.moonlightembeddedcontroller.Adapter.GameAdapter;
+import com.marche.moonlightembeddedcontroller.Events.GameLoadingEvent;
 import com.marche.moonlightembeddedcontroller.Events.GotGamesEvent;
 import com.marche.moonlightembeddedcontroller.Events.RefreshGames;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
@@ -44,7 +46,7 @@ import retrofit.converter.GsonConverter;
 /**
  * Created by Chris.Owen on 01/06/2015.
  */
-public class GameFragment extends Fragment {
+public class GameFragment extends Fragment implements AbsListView.OnScrollListener{
 
     Device device;
 
@@ -55,12 +57,16 @@ public class GameFragment extends Fragment {
     JazzyListView listView;
 
     GameAdapter adapter;
+    MaterialDialog gameLoading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_games, container, false);
         ButterKnife.inject(this, rootView);
+
         listView.setTransitionEffect(new SlideInEffect());
+        listView.setOnScrollListener(this);
+
 
         Bundle bundle = this.getArguments();
         device = (Device) bundle.getSerializable("device");
@@ -85,7 +91,7 @@ public class GameFragment extends Fragment {
         if(games.isEmpty()){
             SSHManager.getInstance().getGames(getActivity());
         } else {
-            Type typeOfT = new TypeToken <ArrayList<Result>>(){}.getType();
+            Type typeOfT = new TypeToken<ArrayList<Result>>(){}.getType();
             ArrayList<Result> results = new Gson().fromJson(games, typeOfT );
             displayGames(results);
         }
@@ -116,14 +122,47 @@ public class GameFragment extends Fragment {
         queryGames(gameNames);
     }
 
+    @Subscribe
+    public void GameLoadingEvent(GameLoadingEvent event){
+        if(gameLoading != null){
+            if(event.done){
+                gameLoading.dismiss();
+                gameLoading = null;
+            } else {
+                gameLoading.setContent(event.text);
+            }
+        }
+    }
+
+    int mLastFirstVisibleItem = 0;
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {   }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (view.getId() == listView.getId()) {
+            final int currentFirstVisibleItem = listView.getFirstVisiblePosition();
+
+            if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+                ((MainActivity)getActivity()).getSupportActionBar().hide();
+            } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
+                ((MainActivity)getActivity()).getSupportActionBar().show();
+            }
+
+            mLastFirstVisibleItem = currentFirstVisibleItem;
+        }
+    }
+
     @OnItemClick(R.id.listView)
     public void onItemClick(int position) {
         SSHManager.getInstance().playGame(getActivity(), adapter.getItem(position).getName());
 
-        new MaterialDialog.Builder(getActivity())
-                .title("Staring " + adapter.getItem(position).getName())
+        gameLoading = new MaterialDialog.Builder(getActivity())
+                .title("Starting " + adapter.getItem(position).getName())
                 .content("This'll just take a second...")
                 .progress(true, 0)
+                .cancelable(false)
                 .show();
     }
 
