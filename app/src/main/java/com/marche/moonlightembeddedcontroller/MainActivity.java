@@ -12,6 +12,9 @@ import android.view.MenuItem;
 
 import com.google.gson.Gson;
 import com.marche.moonlightembeddedcontroller.Events.RefreshGames;
+import com.marche.moonlightembeddedcontroller.Fragments.CreditsFragment;
+import com.marche.moonlightembeddedcontroller.Fragments.GameFragment;
+import com.marche.moonlightembeddedcontroller.Fragments.LaunchFragment;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 

@@ -1,4 +1,4 @@
-package com.marche.moonlightembeddedcontroller;
+package com.marche.moonlightembeddedcontroller.Fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.dd.CircularProgressButton;
 import com.google.gson.Gson;
 import com.marche.moonlightembeddedcontroller.Events.PairEvent;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
+import com.marche.moonlightembeddedcontroller.R;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
 

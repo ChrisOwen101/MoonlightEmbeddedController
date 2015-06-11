@@ -296,7 +296,7 @@ public class SSHManager {
             @Override
             public void run() {
                 try {
-                    Channel channel=session.openChannel("shell");
+                    Channel channel = session.openChannel("shell");
                     OutputStream ops = channel.getOutputStream();
                     PrintStream ps = new PrintStream(ops, true);
 

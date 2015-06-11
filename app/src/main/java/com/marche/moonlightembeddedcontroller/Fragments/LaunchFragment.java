@@ -1,4 +1,4 @@
-package com.marche.moonlightembeddedcontroller;
+package com.marche.moonlightembeddedcontroller.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +17,7 @@ import com.marche.moonlightembeddedcontroller.Events.LimelightExistsEvent;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
 import com.marche.moonlightembeddedcontroller.Events.SSHError;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
+import com.marche.moonlightembeddedcontroller.R;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
 

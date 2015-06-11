@@ -1,4 +1,4 @@
-package com.marche.moonlightembeddedcontroller;
+package com.marche.moonlightembeddedcontroller.Fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,9 +21,11 @@ import com.marche.moonlightembeddedcontroller.Events.GameLoadingEvent;
 import com.marche.moonlightembeddedcontroller.Events.GotGamesEvent;
 import com.marche.moonlightembeddedcontroller.Events.RefreshGames;
 import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
+import com.marche.moonlightembeddedcontroller.MainActivity;
 import com.marche.moonlightembeddedcontroller.POJO.Container;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
 import com.marche.moonlightembeddedcontroller.POJO.Result;
+import com.marche.moonlightembeddedcontroller.R;
 import com.marche.moonlightembeddedcontroller.RESTAPI.GamesAPIService;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
