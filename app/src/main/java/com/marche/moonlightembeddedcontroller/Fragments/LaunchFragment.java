@@ -109,10 +109,10 @@ public class LaunchFragment extends Fragment {
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
 
-            PairFragment pair = new PairFragment();
-            pair.setArguments(b);
+            FindHostFragment findHostFragment = new FindHostFragment();
+            findHostFragment.setArguments(b);
 
-            transaction.replace(R.id.container, pair);
+            transaction.replace(R.id.container, findHostFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         } else {

@@ -117,7 +117,9 @@ public class SSHManager {
             command += " -localaudio ";
         }
 
-        command += "stream";
+        command += "stream ";
+
+        command += device.hostIP;
 
         System.out.println(command);
 
@@ -243,7 +245,7 @@ public class SSHManager {
                     channel.setOutputStream(baos);
 
                     // Execute command
-                    channel.setCommand("cd " + device.directory + "; java -jar limelight.jar list");
+                    channel.setCommand("cd " + device.directory + "; java -jar limelight.jar list " + device.hostIP);
                     channel.connect();
 
                     boolean gamesIncoming = false;
@@ -302,7 +304,7 @@ public class SSHManager {
 
                     channel.connect();
                     ps.println("cd " + device.directory);
-                    ps.println("java -jar limelight.jar pair");
+                    ps.println("java -jar limelight.jar pair " + device.hostIP);
                     //give commands to be executed inside println.and can have any no of commands sent.
                     ps.close();
 

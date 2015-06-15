@@ -11,6 +11,7 @@ public class Device implements Serializable {
     public String ip;
     public String login;
     public String password;
+    public String hostIP = "";
 
     public Device(String ip, String login, String password){
         this.ip = ip;

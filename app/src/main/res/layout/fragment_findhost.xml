@@ -10,6 +10,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$PlaceholderFragment"
     android:orientation="vertical"
+    android:layout_gravity="center"
     android:gravity="center">
 
     <android.support.v7.widget.CardView
@@ -24,6 +25,14 @@
             android:layout_height="fill_parent"
             android:orientation="vertical"
             android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="If you know the devide you want to stream from enter it below. If not, skip it and we'll find it for you."
+                android:padding="5dp"
+                android:textSize="14sp"
+                android:gravity="center"/>
 
             <EditText
                 android:layout_width="fill_parent"
@@ -43,48 +52,8 @@
                 app:cpb_textIdle="Find IP Address"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"/>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="5dp"
-        android:layout_marginBottom="10dp">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:layout_margin="5dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Enter the Login (or Username) and password of the device you want to connect to."
-                android:padding="5dp"
-                android:textSize="14sp"
-                android:gravity="center"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/login"
-                android:layout_gravity="center_horizontal"
-                android:hint="Login"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/password"
-                android:layout_gravity="center_horizontal"
-                android:hint="Password"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -95,15 +64,37 @@
         card_view:cardCornerRadius="5dp"
         android:layout_marginBottom="10dp">
 
-        <com.dd.CircularProgressButton
-            android:id="@+id/loginButton"
-            android:layout_width="196dp"
-            android:layout_height="64dp"
-            android:textColor="@color/cpb_white"
-            android:textSize="18sp"
-            app:cpb_textComplete="Complete"
-            app:cpb_textError="Error"
-            app:cpb_textIdle="Login" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.dd.CircularProgressButton
+                android:id="@+id/nextButton"
+                android:layout_width="fill_parent"
+                android:layout_height="64dp"
+                android:textColor="@color/cpb_white"
+                android:textSize="18sp"
+                app:cpb_textComplete="Next"
+                app:cpb_textError="Next"
+                app:cpb_textIdle="Next"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"/>
+
+            <com.dd.CircularProgressButton
+                android:id="@+id/skipButton"
+                android:layout_width="fill_parent"
+                android:layout_height="64dp"
+                android:textColor="@color/cpb_white"
+                android:textSize="18sp"
+                app:cpb_textComplete="Skip"
+                app:cpb_textError="Skip"
+                app:cpb_textIdle="Skip"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 </LinearLayout>

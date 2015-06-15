@@ -9,7 +9,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$PlaceholderFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <android.support.v7.widget.CardView
         android:layout_gravity="center"
@@ -29,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:text="Next up, pairing your host and your streaming device. Make sure the computer you nwant to stream from is connected to the same network as your device."
                 android:padding="5dp"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:gravity="center"/>
 
 
@@ -73,7 +74,7 @@
                 android:layout_height="match_parent"
                 android:text="Click the above button to pair, you will need to go to your computer to enter the pairing code."
                 android:padding="5dp"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:gravity="center"/>
 
 
