@@ -23,12 +23,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends ActionBarActivity {
 
+    MenuItem actionSettings;
+    MenuItem actionReload;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-
             SharedPreferences prefs = getPreferences(MODE_PRIVATE);
             String deviceString = prefs.getString("device", "");
 
@@ -58,8 +60,11 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        actionSettings = menu.getItem(0);
+        actionReload = menu.getItem(1);
+
+        hideActionMenuButtons();
         return true;
     }
 
@@ -67,6 +72,16 @@ public class MainActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Moonlight Controller");
         actionBar.setIcon(R.mipmap.ic_launcher);
+    }
+
+    public void showActionMenuButtons(){
+        actionSettings.setVisible(true);
+        actionReload.setVisible(true);
+    }
+
+    public void hideActionMenuButtons(){
+        actionSettings.setVisible(false);
+        actionReload.setVisible(false);
     }
 
     @Override

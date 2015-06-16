@@ -73,6 +73,8 @@ public class GameFragment extends Fragment implements AbsListView.OnScrollListen
         Bundle bundle = this.getArguments();
         device = (Device) bundle.getSerializable("device");
 
+        ((MainActivity)getActivity()).showActionMenuButtons();
+
         return rootView;
     }
 

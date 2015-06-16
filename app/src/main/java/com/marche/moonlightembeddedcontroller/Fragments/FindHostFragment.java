@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
 import com.marche.moonlightembeddedcontroller.R;
+import com.marche.moonlightembeddedcontroller.SSH.IPHelper;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class FindHostFragment extends Fragment {
         return rootView;
     }
 
-    @OnClick(R.id.ipaddress)
+    @OnClick(R.id.findIP)
     public void getIPAddress(View view) {
         openSearchIPDialog();
     }
@@ -77,7 +78,7 @@ public class FindHostFragment extends Fragment {
                         })
                 .show();
 
-        scanSubNet("192.168.1.");
+        scanSubNet(IPHelper.getLocalIPSubnet(getActivity()));
     }
 
     ArrayList<String> deviceIPs = new ArrayList<>();
@@ -133,7 +134,7 @@ public class FindHostFragment extends Fragment {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
 
-        GameFragment pair = new GameFragment();
+        PairFragment pair = new PairFragment();
         pair.setArguments(b);
 
         transaction.replace(R.id.container, pair);

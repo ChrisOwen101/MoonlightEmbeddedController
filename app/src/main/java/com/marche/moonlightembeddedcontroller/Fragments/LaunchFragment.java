@@ -18,6 +18,7 @@ import com.marche.moonlightembeddedcontroller.Events.SSHConnected;
 import com.marche.moonlightembeddedcontroller.Events.SSHError;
 import com.marche.moonlightembeddedcontroller.POJO.Device;
 import com.marche.moonlightembeddedcontroller.R;
+import com.marche.moonlightembeddedcontroller.SSH.IPHelper;
 import com.marche.moonlightembeddedcontroller.SSH.SSHManager;
 import com.squareup.otto.Subscribe;
 
@@ -219,7 +220,7 @@ public class LaunchFragment extends Fragment {
                         })
                 .show();
 
-        scanSubNet("192.168.1.");
+        scanSubNet(IPHelper.getLocalIPSubnet(getActivity()));
     }
 
     public void showDirectoryDialog(){

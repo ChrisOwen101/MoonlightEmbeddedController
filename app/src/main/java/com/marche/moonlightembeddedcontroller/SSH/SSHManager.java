@@ -106,7 +106,7 @@ public class SSHManager {
         }
 
         if(!mappings.isEmpty()){
-            command += " -mapping " + device.directory + "/xbox.map ";
+            command += " -mapping " + mappings + " ";
         }
 
         if(!nosops){
@@ -329,6 +329,9 @@ public class SSHManager {
                                 break;
                             } else if(tmpString.contains("Already paired")){
                                 dispatchEventBus(con, new PairEvent(true));
+                                break;
+                            } else if(tmpString.contains("timed out")){
+                                dispatchEventBus(con, new PairEvent(false));
                                 break;
                             }
                         }
