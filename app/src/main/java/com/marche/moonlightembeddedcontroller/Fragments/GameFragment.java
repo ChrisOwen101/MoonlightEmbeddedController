@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -69,11 +71,10 @@ public class GameFragment extends Fragment implements AbsListView.OnScrollListen
         listView.setTransitionEffect(new SlideInEffect());
         listView.setOnScrollListener(this);
 
+        setHasOptionsMenu(true);
 
         Bundle bundle = this.getArguments();
         device = (Device) bundle.getSerializable("device");
-
-        ((MainActivity)getActivity()).showActionMenuButtons();
 
         return rootView;
     }
@@ -107,6 +108,12 @@ public class GameFragment extends Fragment implements AbsListView.OnScrollListen
         listView.setVisibility(View.GONE);
 
         SSHManager.getInstance().getGames(getActivity());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     @Subscribe

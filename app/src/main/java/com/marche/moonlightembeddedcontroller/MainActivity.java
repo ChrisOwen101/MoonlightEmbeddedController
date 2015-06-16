@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -58,30 +57,10 @@ public class MainActivity extends ActionBarActivity {
         setupActionBar();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        actionSettings = menu.getItem(0);
-        actionReload = menu.getItem(1);
-
-        hideActionMenuButtons();
-        return true;
-    }
-
     public void setupActionBar(){
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Moonlight Controller");
         actionBar.setIcon(R.mipmap.ic_launcher);
-    }
-
-    public void showActionMenuButtons(){
-        actionSettings.setVisible(true);
-        actionReload.setVisible(true);
-    }
-
-    public void hideActionMenuButtons(){
-        actionSettings.setVisible(false);
-        actionReload.setVisible(false);
     }
 
     @Override

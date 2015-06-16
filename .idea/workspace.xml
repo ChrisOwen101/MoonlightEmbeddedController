@@ -41,15 +41,11 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.marche.moonlightembeddedcontroller" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0768b83-e74c-49ce-8b59-bc2e4435f1da" name="Default" comment="Added screen for select the host device">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/key.jks" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/SSH/IPHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/FindHostFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/FindHostFragment.java" />
+    <list default="true" id="f0768b83-e74c-49ce-8b59-bc2e4435f1da" name="Default" comment="Fixed bugs">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/menu/intro_main.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/GameFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/GameFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/LaunchFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/LaunchFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/SSH/SSHManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/SSH/SSHManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gradle.iws" />
@@ -76,18 +72,48 @@
       <file leaf-file-name="PairFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/PairFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="765" max-vertical-offset="2091">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1751" max-vertical-offset="2499">
               <caret line="103" column="39" selection-start-line="103" selection-start-column="39" selection-end-line="103" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SSHManager.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SSHManager.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/SSH/SSHManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.99763036" vertical-offset="4309" max-vertical-offset="7633">
+            <state vertical-scroll-proportion="0.0" vertical-offset="5151" max-vertical-offset="7633">
               <caret line="341" column="7" selection-start-line="341" selection-start-column="7" selection-end-line="341" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.66857797" vertical-offset="233" max-vertical-offset="1445">
+              <caret line="66" column="13" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/GameFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="3519">
+              <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="build.gradle" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="799">
+              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -638,7 +664,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4301396233316" />
+        <entry key="$PROJECT_DIR$" value="4301998005038" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -771,7 +797,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/anim/exit.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Adapter/GameAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/game_list.xml" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_games.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/CreditsFragment.java" />
@@ -789,9 +814,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/LaunchFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/FindHostFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/GameFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/SSH/SSHManager.java" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/intro_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/GameFragment.java" />
       </list>
     </option>
   </component>
@@ -827,11 +854,11 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane />
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -938,7 +965,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
+              <option name="myItemId" value="menu" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1090,6 +1117,7 @@
       <recent name="com.marche.moonlightembeddedcontroller" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Chris\Documents\MoonlightEmbeddedController\app\src\main\res\menu" />
       <recent name="C:\Users\Chris\Documents\MoonlightEmbeddedController\app\src\main\res\layout" />
       <recent name="C:\Users\Chris\Documents\MoonlightEmbeddedController\app\src\main\res" />
     </key>
@@ -1344,7 +1372,11 @@
       <created>1434391744991</created>
       <updated>1434391744991</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Fixed bugs">
+      <created>1434472847187</created>
+      <updated>1434472847187</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1420,20 +1452,14 @@
     <MESSAGE value="Added Callback for Starting a game. Hide action bar when user scrolls." />
     <MESSAGE value="Refactor" />
     <MESSAGE value="Added screen for select the host device" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added screen for select the host device" />
+    <MESSAGE value="Fixed bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed bugs" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Events/PairEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="323">
-          <caret line="10" column="32" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/LaunchFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1598" max-vertical-offset="2788">
@@ -1680,13 +1706,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2924312" vertical-offset="0" max-vertical-offset="872">
-          <caret line="15" column="31" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/app/libs/jsch-0.1.52.jar!/com/jcraft/jsch/Channel.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34238487" vertical-offset="1648" max-vertical-offset="3060">
@@ -1750,9 +1769,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19495413" vertical-offset="0" max-vertical-offset="872">
           <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1791,26 +1807,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/GameFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="3434">
-          <caret line="75" column="62" selection-start-line="75" selection-start-column="62" selection-end-line="75" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.27293578" vertical-offset="0" max-vertical-offset="872">
           <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22706422" vertical-offset="584" max-vertical-offset="1785">
-          <caret line="64" column="37" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -1825,8 +1825,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/SSH/SSHManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.99763036" vertical-offset="4309" max-vertical-offset="7633">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5151" max-vertical-offset="7633">
           <caret line="341" column="7" selection-start-line="341" selection-start-column="7" selection-end-line="341" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="799">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/intro_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.038990825" vertical-offset="0" max-vertical-offset="872">
+          <caret line="2" column="81" selection-start-line="2" selection-start-column="81" selection-end-line="2" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/Fragments/GameFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="3519">
+          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/marche/moonlightembeddedcontroller/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.66857797" vertical-offset="233" max-vertical-offset="1445">
+          <caret line="66" column="13" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
           <folding />
         </state>
       </provider>
